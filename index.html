@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>BM in phospholipids' motion</title>
+        <link rel="stylesheet" href="aes.css">
+    </head>
+
+    <body>
+        <main>
+            <h1>Phospholipids' Brownian Motion in erythrocyte membranes</h1>
+            <article>
+                <!--Intro-->
+                <section id="introduction">
+                    <h2>Introduction</h2>
+                    <p>
+                        <strong>Brownian Motion</strong> describes the limit trajectory of a point moving through equally spaced, independent steps,
+                        and it can be useful to describe <em>phospholipid motion</em> in erythrocyte membranes. 
+                        This was observed <span class="citazione" title="Direct observation of Brownian motion of lipids in a membrane. Proceedings of the National Academy of Sciences">(Lee, Ishihara and Jacobson 1991)</span> using <em>nanovid microscopy</em>, which is a tracing technique 
+                        using gold particles to trace the phospholipids' motion.
+                        Phospholipids' motion within the membrane plane, composed of random exchanges of position with neighbors, 
+                        is what gives rise to a diffusive lateral motion <span class="citazione" title="Molecular Biology of the Cell, 6th Edition">(Alberts, B. 2014)</span>.
+                        We will treat the mathematical aspects of the relationship between the well-known diffusive motion of phospholipids
+                        in the cell membrane and the laboratory observation of their Brownian Motion.
+                        In particular, we will describe the relationships between the <em class="introsubject">observed mean square displacement (MSD)</em>,
+                        <em class="introsubject">diffusion coefficient D</em>, and the same quantity expressed in terms of the <em class="introsubject">scaling parameter &sigma;<sup>2</sup></em> of Brownian Motion.
+                    </p>
+                    <p>
+                        Diabetes mellitus is a chronic condition where the body does not use insulin properly or make enough of it, causing glucose to build up in the blood.
+                        In the presence of diabetes mellitus there are some chemical reactions related to hyperglycemia and elevated cholesterol that slow down phospholipid motion along the membrane
+                        <span class="citazione" title="The Relationship of Chemical Modification of Membrane Proteins and Plasma Lipoproteins to Reduced Membrane Fluidity of Erythrocytes from Diabetic Subjects">(Watala &amp; Winocour 1992)</span>. In our analysis this is important to describe and quantify the decrease of the diffusion
+                        coefficient when patients have diabetes mellitus.
+                    </p>
+                    <p>
+                        Once we have taken care of the mathematical aspects, we transfer our model to R to simulate the motion and study how
+                        diabetes impacts the <em>First Passage Time (FPT)</em>: a random variable built to make it easier to understand the deceleration of phospholipid motion. 
+                        The FPT represents the time spent by a single phospholipid to reach a fixed spatial threshold.
+                    </p>
+                    <p>
+                        We will study the cell in two cases: when the cell is healthy with an ordinary diffusion coefficient and when the cell is affected by diabetes, represented by a lower diffusion coefficient.
+                        In the case when the cell is affected, we certainly expect a slower phospholipid motion; but our goal is also to <em>quantify</em> this difference
+                        and see how this phenomenon reflects on the FPT distribution.
+                        We will simulate the motions in order to have both distributions of FPT to see <em>how much</em> difference there is and to simulate a diabetes test with a p-value.
+                    </p>
+            </section>
+            <!--biologia-->
+            <section id="phospholipids">
+                <h2>Phospholipids</h2>
+                <p>
+                    Phospholipids are the principal component of the erythrocyte membrane.
+                    Essentially, they consist of three parts: a glycerol molecule, two fatty acids (forming the hydrophobic 'tails'), and a phosphate group linked to an alcohol (forming the hydrophilic 'head'). This structure allows them to adopt a specific arrangement (see Figure 1), forming a lipid bilayer with the hydrophobic tails oriented inward and the hydrophilic heads oriented outward.
+                </p>
+                <figure class="img-destra">
+                    <img src="phmove.jpeg" alt="Diagram of phospholipid movements in a bilayer">
+                    <figcaption>Figure 1: Illustration of phospholipid movements in the erythrocyte membrane.</figcaption>
+                </figure>
+                <p>
+                    The erythrocyte plasma membrane can be viewed as a two-dimensional fluid in which phospholipids move.
+                    This environment allows them to undergo essentially three types of movement:
+                </p>
+                <ul>
+                    <li><strong>Rotation:</strong> molecules rotate about their longitudinal axis.</li>
+                    <li><strong>Flexion:</strong> oscillation of the molecules' hydrocarbon tails.</li>
+                    <li><span class="introsubject">Lateral diffusion:</span> molecules move within the plane of the fluid, exchanging positions with their neighbors.</li>
+                </ul>
+                <p>
+                    Occasionally, they can undergo <em>flip-flop</em> (transverse diffusion), a rare movement in which a phospholipid migrates from one monolayer to the other. 
+                </p>
+                <p>
+                    The primary movement of interest for our model is lateral diffusion.
+                    We aim to model the spatiotemporal evolution of a phospholipid's position using the diffusion equation.
+                    This lateral diffusion is very rapid: each molecule exchanges places with its neighbors about 10<sup>7</sup> times per second, resulting in a diffusion coefficient<br><var>D</var> &approx; 10<sup>&minus;8</sup> cm<sup>2</sup>/s <span class="citazione" title="Molecular Biology of the Cell, 6th Edition, chapter 10">(Alberts, B. 2014)</span>.
+                </p>
+
+                <h3>Effect of diabetes mellitus on the erythrocyte membrane</h3>
+                <p>
+                    Diabetes mellitus is a condition defined by persistently high levels of glucose in the blood, caused by impaired release or action of <em>insulin</em>, the hormone that regulates glycemia.
+                    <br>Experimental studies have shown that diabetes mellitus alters the mechanical properties of the erythrocyte membrane. Compared to healthy erythrocytes, affected cells show an alteration of the biconcave disc shape and a reduction in cell diameter, accompanied by increased rigidity and viscosity.
+                    To investigate the lateral diffusion of phospholipid molecules, we refer to a study using <em>pyrene molecules</em> incorporated into the hydrophobic membrane region.
+                    In its monomeric form, pyrene emits light at 396 nm, whereas collision between two pyrene molecules forms an excimer with an emission band at 470 nm. <br>Let <var>I</var><sub>470</sub> and <var>I</var><sub>396</sub> be the observed emission intensities at their respective wavelengths; the ratio <var>I</var><sub>470</sub>/<var>I</var><sub>396</sub> quantifies the collision frequency of pyrene molecules and thus reflects the rate of lateral diffusion than we can state that <br><span class="introsubject"><var>D</var> &prop; <var>I</var><sub>470</sub>/<var>I</var><sub>396</sub></span>.<br>
+                    From the study by <span class="citazione" title="The Relationship of Chemical Modification of Membrane Proteins and Plasma Lipoproteins to Reduced Membrane Fluidity of Erythrocytes from Diabetic Subjects">(Watala &amp; Winocour 1992)</span>, we observe that in erythrocytes from subjects affected by diabetes mellitus the mean ratio is <var>I</var><sub>470</sub>/<var>I</var><sub>396</sub> &approx; 0.762 &plusmn; 0.128, while in healthy erythrocytes it is <var>I</var><sub>470</sub>/<var>I</var><sub>396</sub> &approx; 0.822 &plusmn; 0.069 (expressed as mean &plusmn; standard deviation).
+                    We can therefore compute the percentage reduction of the fluorescence ratio in diabetic erythrocytes compared to healthy ones:
+                </p>
+
+                <math display="block">
+                    <mtext>Percentage Reduction</mtext>
+                    <mo>=</mo>
+                    <mfrac>
+                        <mrow>
+                            <msub>
+                                <mrow><mo>(</mo><mfrac><msub><mi>I</mi><mn>470</mn></msub><msub><mi>I</mi><mn>396</mn></msub></mfrac><mo>)</mo></mrow>
+                                <mtext>healthy</mtext>
+                            </msub>
+                            <mo>&minus;</mo>
+                            <msub>
+                                <mrow><mo>(</mo><mfrac><msub><mi>I</mi><mn>470</mn></msub><msub><mi>I</mi><mn>396</mn></msub></mfrac><mo>)</mo></mrow>
+                                <mtext>diabetic</mtext>
+                            </msub>
+                        </mrow>
+                        <msub>
+                            <mrow><mo>(</mo><mfrac><msub><mi>I</mi><mn>470</mn></msub><msub><mi>I</mi><mn>396</mn></msub></mfrac><mo>)</mo></mrow>
+                            <mtext>healthy</mtext>
+                        </msub>
+                    </mfrac>
+                    <mo>&times;</mo>
+                    <mn>100</mn>
+                    <mo>%</mo>
+                    <mo>=</mo>
+                    <mfrac>
+                        <mrow>
+                            <mn>0.822</mn>
+                            <mo>&minus;</mo>
+                            <mn>0.762</mn>
+                        </mrow>
+                        <mn>0.822</mn>
+                    </mfrac>
+                    <mo>&times;</mo>
+                    <mn>100</mn>
+                    <mo>%</mo>
+                    <mo>&approx;</mo>
+                    <mn>7.30</mn>
+                    <mo>%</mo>
+                </math>
+            </section>
+            </article>
+        </main>
+    </body>
+</html>

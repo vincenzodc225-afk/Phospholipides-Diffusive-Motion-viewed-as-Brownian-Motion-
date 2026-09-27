@@ -1,0 +1,126 @@
+@media (max-width: 600px) {
+    main {
+        margin: 0;
+        padding: 20px;
+        border-radius: 0;
+    }
+    .img-destra {
+        float: none; /* Disattiva l'affiancamento su schermi stretti */
+        max-width: 100%;
+        margin: 20px auto;
+    }
+    math[display="block"] {
+        overflow-x: auto; /* Permette di scorrere col dito le formule lunghe */
+        font-size: 0.95em;
+    }
+}
+
+
+
+body {
+    margin: 0;
+    background-image: url("backg.svg");
+    background-repeat: repeat;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: #2c3e50;
+    line-height: 1.7;
+}
+
+main {
+    max-width: 800px;
+    min-height: 100vh;
+    margin: 30px auto;
+    padding: 40px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 0 25px 5px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: rebeccapurple;
+    font-size: 2.2em;
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rebeccapurple;
+}
+
+h2 {
+    color: #1a252f;
+    font-size: 1.5em;
+    border-left: 5px solid rebeccapurple;
+    padding-left: 12px;
+    margin-top: 35px;
+}
+
+section {
+    margin-bottom: 45px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+p {
+    text-align: justify;
+    margin-bottom: 1.2em;
+}
+
+.introsubject {
+    color: #cc0000;
+    background: linear-gradient(to top, yellow 50%, transparent 50%);
+    padding: 0 2px;
+}
+
+.citazione {
+    color: #555555;
+    border-bottom: 1px dotted #888888;
+}
+
+
+/* 1. Inizializza il contatore automatico delle figure nella pagina */
+body {
+    counter-reset: fig-counter;
+}
+
+/* 2. Contenitore (gestisce solo la posizione a destra, SENZA bordo) */
+.img-destra {
+    float: right;
+    display: flex;
+    flex-direction: column;
+    width: 280px;
+    margin: 5px 0 15px 25px !important;
+    box-sizing: border-box;
+}
+
+/* 3. Immagine (il bordo e il riquadro ora sono SOLO attorno all'immagine) */
+.img-destra img {
+    float: none !important;
+    width: 100% !important;
+    height: auto;
+    display: block;
+    margin: 0;
+    padding: 6px;
+    background-color: #ffffff;
+    border: 2px solid #a3d5d3;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+/* 4. Didascalia (fuori dal bordo e con testo più piccolo) */
+.img-destra figcaption {
+    width: 100%;
+    margin-top: 6px;
+    font-size: 0.75em;       /* Testo più piccolo (puoi scendere a 0.7em se vuoi) */
+    line-height: 1.3;
+    color: #57606a;
+    text-align: center;
+}
+
+/* 5. Numerazione automatica su tutti i tag <figure> dell'articolo */
+figure {
+    counter-increment: fig-counter;
+}
+
+figcaption::before {
+    content: "Figure " counter(fig-counter) ": ";
+    font-weight: bold;
+}
