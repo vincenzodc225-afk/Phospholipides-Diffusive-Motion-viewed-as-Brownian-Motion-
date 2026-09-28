@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>BM in phospholipids' motion</title>
         <link rel="stylesheet" href="aes.css">
     </head>
@@ -52,7 +53,7 @@
                 </p>
                 <figure class="img-destra">
                     <img src="phmove.jpeg" alt="Diagram of phospholipid movements in a bilayer">
-                    <figcaption>Figure 1: Illustration of phospholipid movements in the erythrocyte membrane.</figcaption>
+                    <figcaption>Illustration of phospholipid movements in the erythrocyte membrane.</figcaption>
                 </figure>
                 <p>
                     The erythrocyte plasma membrane can be viewed as a two-dimensional fluid in which phospholipids move.
@@ -122,7 +123,256 @@
                     <mo>%</mo>
                 </math>
             </section>
+            <!--Matematica-->
+            <section id="one-dimensional-bm">
+                <h2>One-dimensional Brownian Motion</h2>
+                <p>
+                    We will start with the one-dimensional case, next we will extend the definition to the two-dimensional case.
+                    Let's imagine a particle moving on the real line starting in <var>x</var>=0 doing, in each <span class="introsubject">temporal step</span>, a <span class="introsubject">space step</span> &delta;&gt;0 in length.<br>
+                    In each temporal step we have two possibilities about the <span class="rosso">direction</span> of the space step: &minus;&delta; (left) with probability of 1/2 and +&delta; (right) with probability of 1/2.<br>
+                    First, we have to formalize the temporal steps; to do this let's consider a temporal domain starting from <var>t</var>=0 and ending at <var>t</var>=<var>T</var>, and a temporal width <var>dt</var>&gt;0.
+                    If we define <var>N</var> = <var>T</var>/<var>dt</var>, we obtain <var>N</var> equal-width sub-intervals [&tau;<sub><var>i</var>&minus;1</sub>, &tau;<sub><var>i</var></sub>], <var>i</var>=1, &hellip;, <var>N</var> (with &tau;<sub>0</sub> = 0).
+                </p>
+                <p>
+                    Let's define the independent random variable <var>X</var><sub><var>i</var></sub> as the space step done in the sub-interval [&tau;<sub><var>i</var>&minus;1</sub>, &tau;<sub><var>i</var></sub>] (at time &tau;<sub><var>i</var></sub>):
+                </p>
+
+                <math display="block">
+                    <msub><mi>X</mi><mi>i</mi></msub>
+                    <mo>=</mo>
+                    <mrow>
+                        <mo>{</mo>
+                        <mtable columnalign="left">
+                            <mtr>
+                                <mtd><mo>+</mo><mi>&delta;</mi></mtd>
+                                <mtd><mtext>with probability &nbsp;</mtext><mfrac><mn>1</mn><mn>2</mn></mfrac></mtd>
+                            </mtr>
+                            <mtr>
+                                <mtd><mo>&minus;</mo><mi>&delta;</mi></mtd>
+                                <mtd><mtext>with probability &nbsp;</mtext><mfrac><mn>1</mn><mn>2</mn></mfrac></mtd>
+                            </mtr>
+                        </mtable>
+                    </mrow>
+                    <mspace width="2em"></mspace>
+                    <mi>i</mi><mo>=</mo><mn>1</mn><mo>,</mo><mo>&hellip;</mo><mo>,</mo><mi>N</mi>
+                </math>
+
+                <p>
+                    Let's consider the fundamental random variable 
+                    <math>
+                        <msub><mi>S</mi><mi>n</mi></msub>
+                        <mo>&coloneq;</mo>
+                        <msubsup>
+                            <mo>&sum;</mo>
+                            <mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow>
+                            <mi>n</mi>
+                        </msubsup>
+                        <msub><mi>X</mi><mi>i</mi></msub>
+                    </math>, 
+                    that is the sum of the independent space steps done from &tau;<sub>1</sub> to &tau;<sub><var>n</var></sub>; it represents the particle's position with respect to the real line at time &tau;<sub><var>n</var></sub>.
+                </p>
+                <div class="sim-box">
+                    <div class="sim-controls">
+                        <label>T: <input type="number" id="in-T" value="10" step="1" min="1"></label>
+                        <label>dt: <input type="number" id="in-dt" value="0.5" step="0.1" min="0.1"></label>
+                        <label>&delta;: <input type="number" id="in-delta" value="1" step="0.5" min="0.1"></label>
+                        <button id="btn-restart">Start / Restart</button>
+                    </div>
+                    <div class="sim-canvases">
+                        <!-- Colonna Sinistra: Retta reale + Xi sotto -->
+                        <div class="canvas-panel">
+                            <canvas id="c-line" width="360" height="220"></canvas>
+                            <div class="sim-readout" id="out-xi">X<sub>i</sub> = &mdash;</div>
+                        </div>
+                        <!-- Colonna Destra: Grafico + Sn sotto -->
+                        <div class="canvas-panel">
+                            <canvas id="c-graph" width="360" height="220"></canvas>
+                            <div class="sim-readout" id="out-sn">S<sub>n</sub> = 0.00 (t = 0.00)</div>
+                        </div>
+                    </div>
+                </div>
+                <p>
+                    note that every <math><msub><mi>X</mi><mi>i</mi></msub></math> is indipendent in way that its realization is not dipendent from other preavius value.
+                </p>
+                <figure class="img-centro">
+                    <img src="traiettorie.png" alt="Eight one-dimensional random walks starting from zero">
+                    <figcaption>
+                        Example of eight one-dimensional random walks starting from 0. The plot shows the position on the line (vertical axis) as a function of time (number of steps taken &minus; horizontal axis).
+                    </figcaption>
+                </figure>
+            </section>
             </article>
         </main>
+        <script>
+        const cLine = document.getElementById('c-line');
+        const ctxLine = cLine.getContext('2d');
+        const cGraph = document.getElementById('c-graph');
+        const ctxGraph = cGraph.getContext('2d');
+        const outXi = document.getElementById('out-xi');
+        const outSn = document.getElementById('out-sn');
+
+        let animId = null;
+
+        function drawRealLine(currentPos, prevPos, progress, maxRange) {
+            ctxLine.clearRect(0, 0, cLine.width, cLine.height);
+            const midY = cLine.height / 2 + 15;
+            const midX = cLine.width / 2;
+            const padX = 35;
+            const scaleX = (cLine.width - padX * 2) / (2 * maxRange);
+
+            // Retta reale e freccia a destra
+            ctxLine.strokeStyle = '#333';
+            ctxLine.lineWidth = 1.8;
+            ctxLine.beginPath();
+            ctxLine.moveTo(padX - 10, midY);
+            ctxLine.lineTo(cLine.width - padX + 15, midY);
+            // Punta freccia asse x
+            ctxLine.lineTo(cLine.width - padX + 9, midY - 4);
+            ctxLine.moveTo(cLine.width - padX + 15, midY);
+            ctxLine.lineTo(cLine.width - padX + 9, midY + 4);
+            // Tacche: -max, 0, +max
+            ctxLine.moveTo(midX, midY - 6);
+            ctxLine.lineTo(midX, midY + 6);
+            ctxLine.moveTo(padX, midY - 4);
+            ctxLine.lineTo(padX, midY + 4);
+            ctxLine.moveTo(cLine.width - padX, midY - 4);
+            ctxLine.lineTo(cLine.width - padX, midY + 4);
+            ctxLine.stroke();
+
+            // Valori ed etichetta sulla punta dell'asse
+            ctxLine.fillStyle = '#333';
+            ctxLine.font = '12px sans-serif';
+            ctxLine.textAlign = 'center';
+            ctxLine.fillText('0', midX, midY + 20);
+            ctxLine.fillText(-maxRange, padX, midY + 20);
+            ctxLine.fillText('+' + maxRange, cLine.width - padX, midY + 20);
+            ctxLine.font = 'italic bold 13px serif';
+            ctxLine.fillText('x', cLine.width - padX + 24, midY + 4);
+
+            // Salto parabolico del punto rosso
+            const interpX = prevPos + (currentPos - prevPos) * progress;
+            const px = midX + interpX * scaleX;
+            const jumpHeight = 45 * Math.sin(progress * Math.PI);
+            const py = midY - jumpHeight;
+
+            ctxLine.fillStyle = '#cc0000';
+            ctxLine.beginPath();
+            ctxLine.arc(px, py, 7, 0, Math.PI * 2);
+            ctxLine.fill();
+        }
+
+        function drawGraph(history, N, T, maxRange) {
+            ctxGraph.clearRect(0, 0, cGraph.width, cGraph.height);
+            const padL = 42;
+            const padR = 30;
+            const padY = 28;
+            const midY = cGraph.height / 2;
+            const w = cGraph.width - padL - padR;
+            const h = cGraph.height - padY * 2;
+
+            // Assi cartesiani con frecce sulle punte
+            ctxGraph.strokeStyle = '#888';
+            ctxGraph.lineWidth = 1.2;
+            ctxGraph.beginPath();
+            // Asse verticale (Sn) con freccia in alto
+            ctxGraph.moveTo(padL, cGraph.height - padY + 5);
+            ctxGraph.lineTo(padL, padY - 12);
+            ctxGraph.lineTo(padL - 4, padY - 6);
+            ctxGraph.moveTo(padL, padY - 12);
+            ctxGraph.lineTo(padL + 4, padY - 6);
+            // Asse orizzontale (t) con freccia a destra
+            ctxGraph.moveTo(padL, midY);
+            ctxGraph.lineTo(cGraph.width - padR + 12, midY);
+            ctxGraph.lineTo(cGraph.width - padR + 6, midY - 4);
+            ctxGraph.moveTo(cGraph.width - padR + 12, midY);
+            ctxGraph.lineTo(cGraph.width - padR + 6, midY + 4);
+            ctxGraph.stroke();
+
+            // Valori agli estremi degli assi e variabili sulle punte
+            ctxGraph.fillStyle = '#333';
+            ctxGraph.font = '11px sans-serif';
+            ctxGraph.textAlign = 'right';
+            ctxGraph.fillText('0', padL - 6, midY + 4);
+            ctxGraph.fillText('+' + maxRange, padL - 6, padY + 4);
+            ctxGraph.fillText(-maxRange, padL - 6, cGraph.height - padY + 4);
+
+            ctxGraph.textAlign = 'center';
+            ctxGraph.fillText(T, cGraph.width - padR, midY + 15);
+
+            ctxGraph.font = 'italic bold 13px serif';
+            ctxGraph.fillText('Sn', padL, padY - 16);
+            ctxGraph.fillText('t', cGraph.width - padR + 20, midY + 4);
+
+            if (history.length < 2) return;
+
+            // Tracciato di Sn
+            ctxGraph.strokeStyle = 'rebeccapurple';
+            ctxGraph.lineWidth = 2;
+            ctxGraph.beginPath();
+            for (let i = 0; i < history.length; i++) {
+                const x = padL + (i / N) * w;
+                const y = midY - (history[i] / maxRange) * (h / 2);
+                if (i === 0) ctxGraph.moveTo(x, y);
+                else ctxGraph.lineTo(x, y);
+            }
+            ctxGraph.stroke();
+        }
+
+        document.getElementById('btn-restart').addEventListener('click', () => {
+            if (animId) cancelAnimationFrame(animId);
+
+            const T = parseFloat(document.getElementById('in-T').value);
+            const dt = parseFloat(document.getElementById('in-dt').value);
+            const delta = parseFloat(document.getElementById('in-delta').value);
+            const N = Math.max(1, Math.floor(T / dt));
+            const maxRange = Number((Math.max(delta * 4, Math.ceil(2.5 * Math.sqrt(N)) * delta)).toFixed(1));
+
+            let step = 0;
+            let Sn = 0;
+            let prevSn = 0;
+            let Xi = 0;
+            let history = [0];
+            let stepStartTime = performance.now();
+            const stepDuration = 850; // Animazione rallentata (850 ms per salto)
+
+            function startNextStep(now) {
+                step++;
+                prevSn = Sn;
+                Xi = Math.random() < 0.5 ? delta : -delta;
+                Sn += Xi;
+                stepStartTime = now;
+                const sign = Xi > 0 ? '+' : '';
+                outXi.innerHTML = `X<sub>${step}</sub> = ${sign}${Xi}`;
+            }
+
+            function loop(now) {
+                if (step === 0) {
+                    startNextStep(now);
+                }
+
+                let elapsed = now - stepStartTime;
+                let progress = Math.min(elapsed / stepDuration, 1);
+
+                drawRealLine(Sn, prevSn, progress, maxRange);
+
+                if (progress < 1) {
+                    animId = requestAnimationFrame(loop);
+                } else {
+                    history.push(Sn);
+                    drawGraph(history, N, T, maxRange);
+                    outSn.innerHTML = `S<sub>${step}</sub> = ${Sn.toFixed(2)} &nbsp;(t = ${(step * dt).toFixed(2)})`;
+
+                    if (step < N) {
+                        startNextStep(now);
+                        animId = requestAnimationFrame(loop);
+                    }
+                }
+            }
+
+            outSn.innerHTML = `S<sub>0</sub> = 0.00 &nbsp;(t = 0.00)`;
+            drawGraph(history, N, T, maxRange);
+            animId = requestAnimationFrame(loop);
+        });
+        </script>
     </body>
 </html>
