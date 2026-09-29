@@ -209,6 +209,33 @@ body {
     margin-top: 6px;
 }
 
+/* Riquadro per la Diffusive Scaling Condition */
+.riquadro {
+    background-color: #f6f3f9;
+    border-left: 4px solid rebeccapurple;
+    padding: 15px 20px;
+    margin: 25px 0;
+    border-radius: 0 6px 6px 0;
+}
+
+/* Evidenziatura gialla centrata per la definizione di sigma^2 */
+.evidenziato {
+    background-color: #ffff00;
+    padding: 12px 24px;
+    border-radius: 6px;
+    width: fit-content;
+    margin: 25px auto;
+    text-align: center;
+    font-size: 1.15em;
+    
+    /* Regolazione fine del grassetto */
+    font-weight: normal;
+    -webkit-text-stroke: 0.4px currentColor; 
+}
+
+
+
+
 /* 5. Numerazione automatica su tutti i tag <figure> dell'articolo */
 figure {
     counter-increment: fig-counter;

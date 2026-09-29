@@ -16,7 +16,7 @@
                     <h2>Introduction</h2>
                     <p>
                         <strong>Brownian Motion</strong> describes the limit trajectory of a point moving through equally spaced, independent steps,
-                        and it can be useful to describe <em>phospholipid motion</em> in erythrocyte membranes. 
+                        it can be useful to describe <em>phospholipid motion</em> in erythrocyte membranes. 
                         This was observed <span class="citazione" title="Direct observation of Brownian motion of lipids in a membrane. Proceedings of the National Academy of Sciences">(Lee, Ishihara and Jacobson 1991)</span> using <em>nanovid microscopy</em>, which is a tracing technique 
                         using gold particles to trace the phospholipids' motion.
                         Phospholipids' motion within the membrane plane, composed of random exchanges of position with neighbors, 
@@ -24,7 +24,7 @@
                         We will treat the mathematical aspects of the relationship between the well-known diffusive motion of phospholipids
                         in the cell membrane and the laboratory observation of their Brownian Motion.
                         In particular, we will describe the relationships between the <em class="introsubject">observed mean square displacement (MSD)</em>,
-                        <em class="introsubject">diffusion coefficient D</em>, and the same quantity expressed in terms of the <em class="introsubject">scaling parameter &sigma;<sup>2</sup></em> of Brownian Motion.
+                        <em class="introsubject">diffusion coefficient D</em>, and the same quantity expressed in terms of the <em class="introsubject">scaling parameter &sigma;&sup2; of Brownian Motion.
                     </p>
                     <p>
                         Diabetes mellitus is a chronic condition where the body does not use insulin properly or make enough of it, causing glucose to build up in the blood.
@@ -192,7 +192,7 @@
                     </div>
                 </div>
                 <p>
-                    note that every <math><msub><mi>X</mi><mi>i</mi></msub></math> is indipendent in way that its realization is not dipendent from other preavius value.
+                    note that every <math><msub><mi>X</mi><mi>i</mi></msub></math> is indipendent in a way that its realization is not dipendent from other preavius values.
                 </p>
                 <figure class="img-centro">
                     <img src="traiettorie.png" alt="Eight one-dimensional random walks starting from zero">
@@ -200,6 +200,132 @@
                         Example of eight one-dimensional random walks starting from 0. The plot shows the position on the line (vertical axis) as a function of time (number of steps taken &minus; horizontal axis).
                     </figcaption>
                 </figure>
+                <h3>Computing the first two moments of <math><msub><mi>S</mi><mi>n</mi></msub></math></h3>
+                <p>
+                    In order to understand the macroscopic behaviour of the particle's motion, we can compute the first two moments of <math><msub><mi>S</mi><mi>n</mi></msub></math> starting from the first two moments of its components <math><msub><mi>X</mi><mi>i</mi></msub></math>. Using the definition of expected value:
+                </p>
+
+                <math display="block">
+                    <mi>E</mi><mrow><mo>[</mo><msub><mi>X</mi><mi>i</mi></msub><mo>]</mo></mrow>
+                    <mo>=</mo>
+                    <mfrac><mn>1</mn><mn>2</mn></mfrac><mi>&delta;</mi>
+                    <mo>+</mo>
+                    <mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mo>(</mo><mo>&minus;</mo><mi>&delta;</mi><mo>)</mo></mrow>
+                    <mo>=</mo>
+                    <mn>0</mn><mo>,</mo>
+                    <mspace width="2em"></mspace>
+                    <mo>&forall;</mo><mi>i</mi><mo>=</mo><mn>1</mn><mo>,</mo><mo>&hellip;</mo><mo>,</mo><mi>N</mi>
+                </math>
+
+                <p>
+                    Now, using the formula 
+                    <math>
+                        <mi>Var</mi><mrow><mo>(</mo><mi>X</mi><mo>)</mo></mrow><mo>=</mo><mi>E</mi><mrow><mo>[</mo><msup><mi>X</mi><mn>2</mn></msup><mo>]</mo></mrow><mo>&minus;</mo><mi>E</mi><msup><mrow><mo>[</mo><mi>X</mi><mo>]</mo></mrow><mn>2</mn></msup>
+                    </math> 
+                    and the identity <math><mi>E</mi><mrow><mo>[</mo><msub><mi>X</mi><mi>i</mi></msub><mo>]</mo></mrow><mo>=</mo><mn>0</mn></math>, we can write:
+                </p>
+
+                <math display="block">
+                    <mi>Var</mi><mrow><mo>(</mo><msub><mi>X</mi><mi>i</mi></msub><mo>)</mo></mrow>
+                    <mo>=</mo>
+                    <mi>E</mi><mrow><mo>[</mo><msubsup><mi>X</mi><mi>i</mi><mn>2</mn></msubsup><mo>]</mo></mrow>
+                    <mo>=</mo>
+                    <mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mrow><mo>(</mo><mi>&delta;</mi><mo>)</mo></mrow><mn>2</mn></msup>
+                    <mo>+</mo>
+                    <mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mrow><mo>(</mo><mo>&minus;</mo><mi>&delta;</mi><mo>)</mo></mrow><mn>2</mn></msup>
+                    <mo>=</mo>
+                    <mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mrow><mo>(</mo><mi>&delta;</mi><mo>)</mo></mrow><mn>2</mn></msup>
+                    <mo>+</mo>
+                    <mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mrow><mo>(</mo><mi>&delta;</mi><mo>)</mo></mrow><mn>2</mn></msup>
+                    <mo>=</mo>
+                    <msup><mi>&delta;</mi><mn>2</mn></msup><mo>,</mo>
+                    <mspace width="2em"></mspace>
+                    <mo>&forall;</mo><mi>i</mi><mo>=</mo><mn>1</mn><mo>,</mo><mo>&hellip;</mo><mo>,</mo><mi>N</mi>
+                </math>
+
+                <p>
+                    Using the linearity property of the expected value:
+                </p>
+
+                <math display="block">
+                    <mi>E</mi><mrow><mo>[</mo><msub><mi>S</mi><mi>n</mi></msub><mo>]</mo></mrow>
+                    <mo>=</mo>
+                    <munderover>
+                        <mo>&sum;</mo>
+                        <mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow>
+                        <mrow><mi>i</mi><mo>=</mo><mi>n</mi></mrow>
+                    </munderover>
+                    <mi>E</mi><mrow><mo>[</mo><msub><mi>X</mi><mi>i</mi></msub><mo>]</mo></mrow>
+                    <mo>=</mo>
+                    <mn>0</mn><mo>,</mo>
+                    <mspace width="2em"></mspace>
+                    <mo>&forall;</mo><mi>n</mi><mo>=</mo><mn>1</mn><mo>,</mo><mo>&hellip;</mo><mo>,</mo><mi>N</mi>
+                </math>
+
+                <p>
+                    while using the additivity property of the variance for independent random variables:
+                </p>
+
+                <math display="block">
+                    <mi>Var</mi><mrow><mo>(</mo><msub><mi>S</mi><mi>n</mi></msub><mo>)</mo></mrow>
+                    <mo>=</mo>
+                    <munderover>
+                        <mo>&sum;</mo>
+                        <mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow>
+                        <mrow><mi>i</mi><mo>=</mo><mi>n</mi></mrow>
+                    </munderover>
+                    <mi>Var</mi><mrow><mo>(</mo><msub><mi>X</mi><mi>i</mi></msub><mo>)</mo></mrow>
+                    <mo>=</mo>
+                    <mi>n</mi><msup><mi>&delta;</mi><mn>2</mn></msup>
+                    <mo>=</mo>
+                    <mrow><mo>(</mo><mi>n</mi><mo>&sdot;</mo><mi>dt</mi><mo>)</mo></mrow><mo>&sdot;</mo><mfrac><msup><mi>&delta;</mi><mn>2</mn></msup><mi>dt</mi></mfrac>
+                    <mo>=</mo>
+                    <msub><mi>&tau;</mi><mi>n</mi></msub><mo>&sdot;</mo><mfrac><msup><mi>&delta;</mi><mn>2</mn></msup><mi>dt</mi></mfrac>
+                </math>
+
+                <p class="riquadro">
+                    The <em>convergence condition</em> to obtain a non-degenerate physical motion is called the <strong>Diffusive Scaling Condition</strong>. It requires that the limit of the ratio <math><mfrac><msup><mi>&delta;</mi><mn>2</mn></msup><mi>dt</mi></mfrac></math> is <em>finite</em> as <math><mi>&delta;</mi><mo>&rarr;</mo><mn>0</mn></math> and <math><mi>dt</mi><mo>&rarr;</mo><mn>0</mn></math>.
+                </p>
+
+                <p>
+                    Let's call this limit &sigma;&sup2;&sup2;:
+                </p>
+
+                <div class="evidenziato">
+                    <math>
+                        <mi>&sigma;&sup2;</mi>
+                        <mo>=</mo>
+                        <munder>
+                            <mo>lim</mo>
+                            <mrow><mi>&delta;</mi><mo>&rarr;</mo><mn>0</mn><mo>,</mo><mspace width="0.2em"></mspace><mi>dt</mi><mo>&rarr;</mo><mn>0</mn></mrow>
+                        </munder>
+                        <mfrac><msup><mi>&delta;</mi><mn>2</mn></msup><mi>dt</mi></mfrac>
+                    </math>
+                </div>
+
+                <h4>From discrete to continuous...</h4>
+                <p>
+                    When we have <math><mi>dt</mi><mo>&rarr;</mo><mn>0</mn></math> and <math><mi>&delta;</mi><mo>&rarr;</mo><mn>0</mn></math>, we are slicing the interval <math><mrow><mo>[</mo><mn>0</mn><mo>,</mo><mi>T</mi><mo>]</mo></mrow></math> using an interval width <math><mi>dt</mi></math> that becomes smaller and smaller; as a consequence, our number of intervals becomes larger and larger: <em><math><mi>dt</mi><mo>&rarr;</mo><mn>0</mn></math> implies <math><mi>N</mi><mo>&rarr;</mo><mo>&infin;</mo></math></em>.
+                    Having observed that, we recall that <math><msub><mi>&tau;</mi><mi>n</mi></msub><mo>=</mo><mi>n</mi><mo>&sdot;</mo><mi>dt</mi><mo>&rarr;</mo><mi>t</mi></math> (as <math><mi>dt</mi><mo>&rarr;</mo><mn>0</mn></math> and <math><mi>n</mi><mo>&rarr;</mo><mo>&infin;</mo></math>), and then we can write the variance as a function of the continuous time <math><mi>t</mi></math>:
+                </p>
+
+                <math display="block">
+                    <mi>Var</mi><mrow><mo>(</mo><mi>S</mi><mrow><mo>(</mo><mi>t</mi><mo>)</mo></mrow><mo>)</mo></mrow>
+                    <mo>=</mo>
+                    <munder>
+                        <mo>lim</mo>
+                        <mrow><mi>&delta;</mi><mo>&rarr;</mo><mn>0</mn><mo>,</mo><mspace width="0.2em"></mspace><mi>dt</mi><mo>&rarr;</mo><mn>0</mn></mrow>
+                    </munder>
+                    <mi>Var</mi><mrow><mo>(</mo><msub><mi>S</mi><mi>n</mi></msub><mo>)</mo></mrow>
+                    <mo>=</mo>
+                    <munder>
+                        <mo>lim</mo>
+                        <mrow><mi>&delta;</mi><mo>&rarr;</mo><mn>0</mn><mo>,</mo><mspace width="0.2em"></mspace><mi>dt</mi><mo>&rarr;</mo><mn>0</mn></mrow>
+                    </munder>
+                    <mrow><mo>(</mo><msub><mi>&tau;</mi><mi>n</mi></msub><mo>&sdot;</mo><mfrac><msup><mi>&delta;</mi><mn>2</mn></msup><mi>dt</mi></mfrac><mo>)</mo></mrow>
+                    <mo>=</mo>
+                    <mi>&sigma;<sup>2</sup></mi><mo>&sdot;</mo><mi>t</mi>
+                </math>
             </section>
             </article>
         </main>
